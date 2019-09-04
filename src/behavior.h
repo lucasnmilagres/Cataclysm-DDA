@@ -75,6 +75,11 @@ class node_t
         std::vector<const node_t *> children;
         const strategy_t *strategy;
         std::function<status_t( const oracle_t * )> predicate;
+
+        behavior_return tick_for_empty_children( const oracle_t *subject ) const;
+        behavior_return tick_for_result_running( const oracle_t *subject ) const;
+        behavior_return tick_for_result_not_running( const oracle_t *subject ) const;
+
         // TODO: make into an ID?
         std::string _goal;
 };

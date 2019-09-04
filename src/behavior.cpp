@@ -34,17 +34,32 @@ void node_t::add_child( const node_t *new_child )
 behavior_return node_t::tick( const oracle_t *subject ) const
 {
     assert( predicate );
-    if( children.empty() ) {
-        return { predicate( subject ), this };
-    } else {
-        assert( strategy != nullptr );
-        status_t result = predicate( subject );
-        if( result == running ) {
-            return strategy->evaluate( subject, children );
-        } else {
-            return { result, nullptr };
-        }
-    }
+
+    if( children.empty() )
+        tick_for_empty_children(subject);
+    else if( result == running )
+         tick_for_result_running(subject);
+    else
+        tick_for_result_not_running(subject);
+}
+
+behavior_return node::tick_for_empty_children( const oracle_t *subject ) const
+{
+    return { predicate( subject ), this };
+}
+
+behavior_return node::tick_for_result_running( const oracle_t *subject ) const
+{
+    assert( strategy != nullptr );
+    status_t result = predicate( subject );
+    return strategy->evaluate( subject, children );
+}
+
+behavior_return node::tick_for_result_not_running( const oracle_t *subject ) const
+{
+    assert( strategy != nullptr );
+    status_t result = predicate( subject );
+    return { result, nullptr };
 }
 
 std::string node_t::goal() const
