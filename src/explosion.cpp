@@ -474,9 +474,9 @@ void explosion( const tripoint &p, float power, float factor, bool fire,
     explosion( p, data );
 }
 
-void explosion( const tripoint &p, const explosion_data &ex )
+void identifyExplosionNoise(const tripoint &p, const explosion_data &ex )
 {
-    const int noise = ex.power * ( ex.fire ? 2 : 10 );
+	const int noise = ex.power * ( ex.fire ? 2 : 10 );
     if( noise >= 30 ) {
         sounds::sound( p, noise, sounds::sound_t::combat, _( "a huge explosion!" ), false, "explosion",
                        "huge" );
@@ -486,14 +486,24 @@ void explosion( const tripoint &p, const explosion_data &ex )
     } else if( noise > 0 ) {
         sounds::sound( p, 3, sounds::sound_t::combat, _( "a loud pop!" ), false, "explosion", "small" );
     }
+}
 
-    if( ex.distance_factor >= 1.0f ) {
+void calculateExplosionDistance(const tripoint &p, const explosion_data &ex )
+{
+	if( ex.distance_factor >= 1.0f ) {
         debugmsg( "called game::explosion with factor >= 1.0 (infinite size)" );
     } else if( ex.distance_factor > 0.0f && ex.power > 0.0f ) {
         // Power rescaled to mean grams of TNT equivalent, this scales it roughly back to where
         // it was before until we re-do blasting power to be based on TNT-equivalent directly.
         do_blast( p, ex.power / 15.0, ex.distance_factor, ex.fire );
     }
+}
+
+void explosion( const tripoint &p, const explosion_data &ex )
+{
+    identifyExplosionNoise(p,ex);
+
+    calculateExplosionDistance(p, ex);
 
     const auto &shr = ex.shrapnel;
     if( shr.casing_mass > 0 ) {

@@ -46,6 +46,9 @@ void explosion(
 
 void explosion( const tripoint &p, const explosion_data &ex );
 
+void identifyExplosionNoise(const tripoint &p, const explosion_data &ex );
+void calculateExplosionDistance(const tripoint &p, const explosion_data &ex );
+
 /** Triggers a flashbang explosion at p. */
 void flashbang( const tripoint &p, bool player_immune = false );
 /** Triggers a resonance cascade at p. */
