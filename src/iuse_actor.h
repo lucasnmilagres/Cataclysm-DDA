@@ -238,6 +238,9 @@ class consume_drug_iuse : public iuse_actor
         ~consume_drug_iuse() override = default;
         void load( JsonObject &obj ) override;
         int use( player &, item &, bool, const tripoint & ) const override;
+		int checkPreRequisitesToDrugUse(player &p, item &it);
+		int checkToolPreRequisite(player &p, item &it, auto need_these);
+		int checkConsumablePreRequisite(player &p, item &it, auto need_these);
         iuse_actor *clone() const override;
         void info( const item &, std::vector<iteminfo> & ) const override;
 

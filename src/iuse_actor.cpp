@@ -653,14 +653,23 @@ void consume_drug_iuse::info( const item &, std::vector<iteminfo> &dump ) const
     }
 }
 
-int consume_drug_iuse::use( player &p, item &it, bool, const tripoint & ) const
+int consume_drug_iuse::checkPreRequisitesToDrugUse(player &p, item &it)
 {
-    auto need_these = tools_needed;
+	auto need_these = tools_needed;
     if( need_these.count( "syringe" ) && p.has_bionic( bio_syringe ) ) {
         need_these.erase( "syringe" ); // no need for a syringe with bionics like these!
     }
-    // Check prerequisites first.
-    for( const auto &tool : need_these ) {
+    
+	if(checkToolPreRequisite(p,it, need_these)==-1)
+		return -1;
+	
+	if(checkConsumablePreRequisite(p,it, need_these)==-1)
+		return -1;
+}
+
+int consume_drug_iuse::checkToolPreRequisite(player &p, item &it, auto need_these)
+{
+	for( const auto &tool : need_these ) {
         // Amount == -1 means need one, but don't consume it.
         if( !p.has_amount( tool.first, 1 ) ) {
             p.add_msg_player_or_say( _( "You need %1$s to consume %2$s!" ),
@@ -670,7 +679,11 @@ int consume_drug_iuse::use( player &p, item &it, bool, const tripoint & ) const
             return -1;
         }
     }
-    for( const auto &consumable : charges_needed ) {
+}
+
+int consume_drug_iuse::checkConsumablePreRequisite(player &p, item &it, auto need_these)
+{
+	for( const auto &consumable : charges_needed ) {
         // Amount == -1 means need one, but don't consume it.
         if( !p.has_charges( consumable.first, ( consumable.second == -1 ) ?
                             1 : consumable.second ) ) {
@@ -681,6 +694,13 @@ int consume_drug_iuse::use( player &p, item &it, bool, const tripoint & ) const
             return -1;
         }
     }
+}
+
+int consume_drug_iuse::use( player &p, item &it, bool, const tripoint & ) const
+{
+	if(checkPreRequisitesToDrugUse(p, it)==-1)
+		return -1;
+    
     // Apply the various effects.
     for( const auto &eff : effects ) {
         time_duration dur = eff.duration;
