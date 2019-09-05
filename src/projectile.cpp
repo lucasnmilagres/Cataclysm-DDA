@@ -179,7 +179,7 @@ void apply_ammo_effects( const tripoint &p, const std::set<std::string> &effects
     }
 
     if( effects.count( "EMP" ) ) {
-        explosion_handler::emp_blast( p );
+        explosion_handler::triggersEmp_blast( p );
     }
 
     if( effects.count( "NO_BOOM" ) == 0 && effects.count( "FLAME" ) > 0 ) {

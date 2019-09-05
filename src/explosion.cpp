@@ -533,7 +533,7 @@ void explosion( const tripoint &p, const explosion_data &ex )
     }
 }
 
-void flashbang( const tripoint &p, bool player_immune )
+void triggersFlashbangExplosion( const tripoint &p, bool player_immune )
 {
     const efftype_id effect_blind( "blind" );
     const efftype_id effect_deaf( "deaf" );
@@ -610,7 +610,7 @@ void shockwave( const tripoint &p, int radius, int force, int stun, int dam_mult
     }
 }
 
-void scrambler_blast( const tripoint &p )
+void triggersScrambler_blast( const tripoint &p )
 {
     if( monster *const mon_ptr = g->critter_at<monster>( p ) ) {
         monster &critter = *mon_ptr;
@@ -622,7 +622,7 @@ void scrambler_blast( const tripoint &p )
     }
 }
 
-void emp_blast( const tripoint &p )
+void triggersEmp_blast( const tripoint &p )
 {
     // TODO: Implement z part
     int x = p.x;
@@ -745,7 +745,7 @@ void emp_blast( const tripoint &p )
     // TODO: Drain NPC energy reserves
 }
 
-void resonance_cascade( const tripoint &p )
+void triggersResonance_cascade( const tripoint &p )
 {
     const time_duration maxglow = time_duration::from_turns( 100 - 5 * trig_dist( p, g->u.pos() ) );
     MonsterGroupResult spawn_details;
@@ -763,7 +763,7 @@ void resonance_cascade( const tripoint &p )
             switch( rng( 1, 80 ) ) {
                 case 1:
                 case 2:
-                    emp_blast( dest );
+                    triggersEmp_blast( dest );
                     break;
                 case 3:
                 case 4:

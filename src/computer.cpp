@@ -528,7 +528,7 @@ void computer::activate_function( computer_action action )
                     cascade_points.push_back( dest );
                 }
             }
-            explosion_handler::resonance_cascade( random_entry( cascade_points, g->u.pos() ) );
+            explosion_handler::triggersResonance_cascade( random_entry( cascade_points, g->u.pos() ) );
         }
         break;
 

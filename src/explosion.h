@@ -49,14 +49,11 @@ void explosion( const tripoint &p, const explosion_data &ex );
 void identifyExplosionNoise(const tripoint &p, const explosion_data &ex );
 void calculateExplosionDistance(const tripoint &p, const explosion_data &ex );
 
-/** Triggers a flashbang explosion at p. */
-void flashbang( const tripoint &p, bool player_immune = false );
-/** Triggers a resonance cascade at p. */
-void resonance_cascade( const tripoint &p );
-/** Triggers a scrambler blast at p. */
-void scrambler_blast( const tripoint &p );
-/** Triggers an EMP blast at p. */
-void emp_blast( const tripoint &p );
+void triggersFlashbangExplosion( const tripoint &p, bool player_immune = false );
+void triggersResonance_cascade( const tripoint &p );
+void triggersScrambler_blast( const tripoint &p );
+void triggersEmp_blast( const tripoint &p );
+
 /** Nuke the area at p - global overmap terrain coordinates! */
 void nuke( const tripoint &p );
 // shockwave applies knockback to all targets within radius of p

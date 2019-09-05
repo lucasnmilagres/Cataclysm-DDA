@@ -475,12 +475,12 @@ int explosion_iuse::use( player &p, item &it, bool t, const tripoint &pos ) cons
     }
     if( scrambler_blast_radius >= 0 ) {
         for( const tripoint &dest : g->m.points_in_radius( pos, scrambler_blast_radius ) ) {
-            explosion_handler::scrambler_blast( dest );
+            explosion_handler::triggersScrambler_blast( dest );
         }
     }
     if( emp_blast_radius >= 0 ) {
         for( const tripoint &dest : g->m.points_in_radius( pos, emp_blast_radius ) ) {
-            explosion_handler::emp_blast( dest );
+            explosion_handler::triggersEmp_blast( dest );
         }
     }
     return 1;
