@@ -243,6 +243,7 @@ class consume_drug_iuse : public iuse_actor
 		int checkConsumablePreRequisite(player &p, item &it, auto need_these);
         iuse_actor *clone() const override;
         void info( const item &, std::vector<iteminfo> & ) const override;
+		void sendPreRequisiteNeedMsg(player &p, item &it, auto requisite_lacking);
 
         /** Item produced after using drugs. */
         std::string used_up_item;

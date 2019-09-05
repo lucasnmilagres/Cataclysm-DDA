@@ -672,10 +672,7 @@ int consume_drug_iuse::checkToolPreRequisite(player &p, item &it, auto need_thes
 	for( const auto &tool : need_these ) {
         // Amount == -1 means need one, but don't consume it.
         if( !p.has_amount( tool.first, 1 ) ) {
-            p.add_msg_player_or_say( _( "You need %1$s to consume %2$s!" ),
-                                     _( "I need a %1$s to consume %2$s!" ),
-                                     item::nname( tool.first ),
-                                     it.type_name( 1 ) );
+            sendPreRequisiteNeedMsg(p, it, tool);
             return -1;
         }
     }
@@ -687,13 +684,18 @@ int consume_drug_iuse::checkConsumablePreRequisite(player &p, item &it, auto nee
         // Amount == -1 means need one, but don't consume it.
         if( !p.has_charges( consumable.first, ( consumable.second == -1 ) ?
                             1 : consumable.second ) ) {
-            p.add_msg_player_or_say( _( "You need %1$s to consume %2$s!" ),
-                                     _( "I need a %1$s to consume %2$s!" ),
-                                     item::nname( consumable.first ),
-                                     it.type_name( 1 ) );
+			sendPreRequisiteNeedMsg(p, it, tool);
             return -1;
         }
     }
+}
+
+void sendPreRequisiteNeedMsg(player &p, item &it, auto requisite_lacking)
+{
+	p.add_msg_player_or_say( _( "You need %1$s to consume %2$s!" ),
+                                     _( "I need a %1$s to consume %2$s!" ),
+                                     item::nname( requisite_lacking.first ),
+                                     it.type_name( 1 ) );
 }
 
 int consume_drug_iuse::use( player &p, item &it, bool, const tripoint & ) const
